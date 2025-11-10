@@ -13,6 +13,6 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(envs.port);
+  await app.listen(envs.port, '0.0.0.0');
 }
 bootstrap();
