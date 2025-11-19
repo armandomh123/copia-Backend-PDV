@@ -15,8 +15,15 @@ export class ProductsController {
   ) { }
 
   @Post()
-  create(
-    @Body() createProductDto: CreateProductDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createProductDto: CreateProductDto
+  ) {
+    if (file) {
+      const uploadedImage = await this.uploadImageService.uploadFile(file);
+      createProductDto.image = uploadedImage.secure_url;
+    }
     return this.productsService.create(createProductDto);
   }
 
@@ -34,8 +41,16 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id', IdValidationPipe) id: string, @Body() updateProductDto: UpdateProductDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async update(
+    @Param('id', IdValidationPipe) id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateProductDto: UpdateProductDto
+  ) {
+    if (file) {
+      const uploadedImage = await this.uploadImageService.uploadFile(file);
+      updateProductDto.image = uploadedImage.secure_url;
+    }
     return this.productsService.update(id, updateProductDto);
   }
 

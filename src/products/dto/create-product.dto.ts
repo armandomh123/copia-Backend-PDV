@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateProductDto {
@@ -9,14 +10,17 @@ export class CreateProductDto {
     @IsOptional()
     image?: string;
 
+    @Type(() => Number)
     @IsNotEmpty({ message: 'El precio del producto es obligatorio' })
     @IsNumber({ maxDecimalPlaces: 2 }, { message: 'Precio no válido' })
     price: number;
 
+    @Type(() => Number)
     @IsNotEmpty({ message: 'La cantidad de producto no puede ir vacía' })
     @IsNumber({ maxDecimalPlaces: 0 }, { message: 'Cantidad no válida' })
     inventory: number;
 
+    @Type(() => Number)
     @IsNotEmpty({ message: 'La categoría del producto es obligatoria' })
     @IsInt({ message: 'Categoría no válida' })
     categoryId: number;
